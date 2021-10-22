@@ -8,7 +8,7 @@ int main (int argc, char *argv[]) {
     std::cout << std::endl;
 
     const char data[] = "abcde";
-    const int index = 0;
+    const int index = BLK_FILE_DEFAULT_SIZE - 1;
     size_t data_size = sizeof(data);
 
     Blkd b;

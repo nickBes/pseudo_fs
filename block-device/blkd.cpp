@@ -33,7 +33,8 @@ void Blkd::write(int index, int data_size, const char* data) {
         } else {
             blk_file.seekp(index);
             // prevent from oveflowing the file
-            blk_file.write(data, data_size);
+            int boundary_space = size - index;
+            blk_file.write(data, boundary_space > index ? size : boundary_space);
             taken_space_size += data_size;
             std::cout << "Writing into the file." << std::endl;
         }
