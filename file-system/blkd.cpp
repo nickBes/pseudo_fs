@@ -14,11 +14,10 @@ void Blkd::open_blk_file(const char* name, int size) {
             std::cout << "blk file is filled out.\n";
             this->size=size;
             taken_space_size=0;
-
-            // reopen in rw+ mode as a prevents from writing by index
-            blk_file.close();
-            blk_file.open(name, std::fstream::in | std::fstream::out | std::fstream::binary);
         }
+        // reopen in rw+ mode as a prevents from writing by index
+        blk_file.close();
+        blk_file.open(name, std::fstream::in | std::fstream::out | std::fstream::binary);
     } else {
         std::cout << "Couldn't open blk file.\n";
     }
