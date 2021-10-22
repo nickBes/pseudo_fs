@@ -1,0 +1,9 @@
+add_library(
+    fs
+    trie.h
+    trie.cpp
+    fs.h
+    fs.cpp
+    blkd.h
+    blkd.cpp
+)
