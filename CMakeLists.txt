@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(pfs VERSION 0.0.1)
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 
 add_executable(${PROJECT_NAME} pfs.cpp)
 

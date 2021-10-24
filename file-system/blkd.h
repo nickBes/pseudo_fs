@@ -8,8 +8,9 @@ class Blkd {
     std::fstream blk_file;
     int size;
     int taken_space_size; 
+    bool new_file;
     public:
-        void open_blk_file(const char* name=BLK_FILE_DEFAULT_NAME, int size=BLK_FILE_DEFAULT_SIZE);
+        Blkd(const char* name, int size);
         void write(int index, int data_size, const char* data);
         void read(int index, int data_size, char* buffer);
         int get_taken_space_size();

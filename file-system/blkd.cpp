@@ -1,9 +1,9 @@
 #include <iostream>
 #include "blkd.h"
 
-void Blkd::open_blk_file(const char* name, int size) {
-    // (de)serialization are not implemented yet...
+Blkd::Blkd(const char* name, int size) {
     blk_file.open(name, std::fstream::in | std::fstream::out | std::fstream::binary | std::fstream::app);
+    std::cout << "An attempt to open blk file.\n"; 
     if (blk_file.is_open()) {
         blk_file.seekg(0, blk_file.end);
         if (blk_file.tellg() == 0) {
