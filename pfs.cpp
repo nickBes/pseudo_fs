@@ -7,16 +7,23 @@ int main (int argc, char *argv[]) {
     }
     std::cout << std::endl;
     std::unique_ptr<FS> fs = std::make_unique<FS>();
+    std::string a = "what's up guys it's me jermey.";
     fs->make_dir("jeff");
-    fs->make_dir("jermey");    
+    fs->make_dir("jermey");
+    fs->print_current();
+    fs->go_to_local("jermey");
+    fs->make_file("jermey_file", a.length() + 1, a.c_str());
+    fs->print_current();
     fs->go_back();
-    fs->print_current();
-    fs->print_current();
     fs->go_to_local("jeff");
+    a = "my name's jeff";
+    fs->make_file("jeff_file", a.length() + 1, a.c_str());
     fs->make_dir("maya");
     fs->make_dir("alex");
     fs->print_current();
     fs->go_to_local("maya");
+    fs->make_dir("oleg");
+    fs->print_current();
     fs->make_dir("oleg");
     fs->print_current();
     fs->go_back();

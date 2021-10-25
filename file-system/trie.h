@@ -5,6 +5,7 @@
 
 #define PREFIX_NAME_SIZE 115
 #define DELIMITER "/"
+#define ROOT_PREFIX "💎"
 
 struct MemChunk {
     int index;
@@ -34,8 +35,8 @@ class PrefixNode {
         void set_parent(const std::shared_ptr<PrefixNode>& parent);
         const std::weak_ptr<PrefixNode>& get_parent() const;
 
-        void add_prefix(std::shared_ptr<PrefixNode>& prefix);
-        int find_locally(std::string path);
+        bool add_prefix(std::shared_ptr<PrefixNode>& prefix);
+        int find_dir_locally(std::string path);
         bool is_dir();
         const std::string& get_prefix_name() const;
         void print_all_local();
@@ -47,4 +48,5 @@ class PrefixTrie {
     public:
         PrefixTrie();
         std::weak_ptr<PrefixNode> current;
+        bool is_head();
 };
