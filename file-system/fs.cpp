@@ -11,6 +11,29 @@ FS::FS(const char* name, int size) {
     // deserialization isn't implemented yet ...
 }
 
+bool FS::show_content(const char* name) {
+    if (!prefix_tree->current.expired()) {
+        const int index = prefix_tree->current.lock()->find_file_locally(name);
+        if (index == -1) {
+            std::cout << "File doesn't exists." << std::endl;
+            return false;
+        }
+        const std::vector<std::unique_ptr<Chunk>>& chunks = prefix_tree->current.lock()->get_prefix_node(index)->get_chunks();
+        char* buffer;
+        for(const auto& chunk : chunks){
+            const int size = chunk->get_next_mem_chunk()->index - chunk->get_index();
+            buffer = new char[size];
+            block_device->read(chunk->get_index(), size, buffer);
+            std::cout << buffer;
+            delete[] buffer;
+        }
+        std::cout << std::endl;
+        return true;
+    }
+    std::cout << "Current dir doesn't exist anymore." << std::endl;
+    return false;
+}
+
 bool FS::make_file(const char* name, int data_size, const char* data) {
     const int org_size = data_size;
     if (data_size <= free_memory) {
@@ -43,7 +66,7 @@ bool FS::make_file(const char* name, int data_size, const char* data) {
                 for (int i = 0; i < next_size; i++) {
                     data_chunk[i] = data[data_index + i];
                 }
-                block_device->write(data_index, next_size, data_chunk);
+                block_device->write(free_memory_list.front()->index, next_size, data_chunk);
                 delete[] data_chunk;
                 free_memory_list.erase(free_memory_list.begin());
                 data_size -= next_size;

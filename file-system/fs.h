@@ -12,6 +12,7 @@ class FS {
         FS(const char* name=BLK_FILE_DEFAULT_NAME, int size=BLK_FILE_DEFAULT_SIZE);
         bool make_file(const char* name, int data_size, const char* data);
         bool make_dir(const char* name);
+        bool show_content(const char* name);
         void print_current();
         void go_to_local(std::string prefix);
         void go_back();
