@@ -15,21 +15,26 @@ struct MemChunk {
 
 class Chunk {
     int index;
-    std::shared_ptr<struct MemChunk> next_chunk;
+    std::shared_ptr<MemChunk> next_chunk;
 
     public:
-        Chunk(int index, std::shared_ptr<struct MemChunk>& mem_chunk);
+        Chunk(int index, std::shared_ptr<MemChunk>& mem_chunk);
 };
 
 class PrefixNode {
     std::string name;
     std::vector<std::shared_ptr<PrefixNode>> next_prefixes;
     std::vector<std::unique_ptr<Chunk>> chunks;
+    std::weak_ptr<PrefixNode> parent;
 
     public:
-        PrefixNode(const char* name);
-        void add_chunk(int index, std::shared_ptr<struct MemChunk>& mem_chunk);
-        void add_prefix(const char* name);
+        PrefixNode(const char* name,const std::shared_ptr<PrefixNode>& parent);
+        void add_chunk(int index, std::shared_ptr<MemChunk>& mem_chunk);
+
+        void set_parent(const std::shared_ptr<PrefixNode>& parent);
+        const std::weak_ptr<PrefixNode>& get_parent() const;
+
+        void add_prefix(std::shared_ptr<PrefixNode>& prefix);
         int find_locally(std::string path);
         bool is_dir();
         const std::string& get_prefix_name() const;

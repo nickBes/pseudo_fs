@@ -1,13 +1,23 @@
 #include "trie.h"
 
 PrefixTrie::PrefixTrie() {
-    head = std::make_shared<PrefixNode>("");
+    head = std::make_shared<PrefixNode>("", nullptr);
     current = head;
+    current.lock()->set_parent(head);
 }
 
-PrefixNode::PrefixNode(const char * name) {
+PrefixNode::PrefixNode(const char * name, const std::shared_ptr<PrefixNode>& parent) {
     this->name = name;
+    this->set_parent(parent);
 }
+
+void PrefixNode::set_parent(const std::shared_ptr<PrefixNode>& parent) {
+    if (parent) {
+        this->parent = parent;
+    }
+}
+
+const std::weak_ptr<PrefixNode>& PrefixNode::get_parent() const { return parent;}
 
 std::shared_ptr<PrefixNode>& PrefixNode::get_prefix_node(int index) {return next_prefixes[index];}
 
@@ -18,12 +28,12 @@ void PrefixNode::print_all_local() {
     std::cout << std::endl;
 }
 
-void PrefixNode::add_chunk(int index, std::shared_ptr<struct MemChunk>& mem_chunk) {
+void PrefixNode::add_chunk(int index, std::shared_ptr<MemChunk>& mem_chunk) {
     chunks.push_back(std::make_unique<Chunk>(index, mem_chunk));
 }
 
-void PrefixNode::add_prefix(const char* name) {
-    next_prefixes.push_back(std::make_shared<PrefixNode>(name));
+void PrefixNode::add_prefix(std::shared_ptr<PrefixNode>& prefix) {
+    next_prefixes.push_back(prefix);
 }
 
 const std::string& PrefixNode::get_prefix_name() const {return name;}
@@ -41,7 +51,7 @@ int PrefixNode::find_locally(std::string prefix) {
 
 bool PrefixNode::is_dir() {return chunks.size() == 0;}
 
-Chunk::Chunk(int index, std::shared_ptr<struct MemChunk>& mem_chunk) {
+Chunk::Chunk(int index, std::shared_ptr<MemChunk>& mem_chunk) {
     this->index = index;
     this->next_chunk = mem_chunk;
 }

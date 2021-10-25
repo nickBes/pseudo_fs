@@ -12,4 +12,5 @@ class FS {
         void make_dir(const char* name);
         void print_current();
         void go_to_local(std::string prefix);
+        void go_back();
 };

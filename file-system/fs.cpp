@@ -11,7 +11,8 @@ FS::FS(const char* name, int size) {
 
 void FS::make_dir(const char* name) {
     if (!prefix_tree->current.expired()) {
-        prefix_tree->current.lock()->add_prefix(name);
+        std::shared_ptr<PrefixNode> dir_prefix = std::make_shared<PrefixNode>(name, prefix_tree->current.lock());
+        prefix_tree->current.lock()->add_prefix(dir_prefix);
     }
 }
 
@@ -31,5 +32,16 @@ void FS::go_to_local(std::string prefix) {
                 prefix_tree->current = tmp;
                 path += prefix_tree->current.lock()->get_prefix_name() + DELIMITER;
             }
+    }
+}
+
+void FS::go_back() {
+    if(!prefix_tree->current.expired()) {
+        std::shared_ptr<PrefixNode> tmp = prefix_tree->current.lock()->get_parent().lock();
+        prefix_tree->current.reset();
+        prefix_tree->current = tmp;
+
+        path = path.substr(0, path.find_last_of(DELIMITER)); // remove last delimiter
+        path = path.substr(0, path.find_last_of(DELIMITER) + 1); // remove last prefix
     }
 }
