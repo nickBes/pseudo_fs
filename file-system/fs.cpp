@@ -103,6 +103,7 @@ void FS::go_to_local(std::string prefix) {
                 prefix_tree->current.reset();
                 prefix_tree->current = tmp;
                 path += prefix_tree->current.lock()->get_prefix_name() + DELIMITER;
+                std::cout << path << std::endl;
             }
     }
 }

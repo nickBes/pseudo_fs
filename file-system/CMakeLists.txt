@@ -6,4 +6,6 @@ add_library(
     fs.cpp
     blkd.h
     blkd.cpp
+    cli.h
+    cli.cpp
 )
